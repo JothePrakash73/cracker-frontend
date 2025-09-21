@@ -1,0 +1,30 @@
+/* Footer.css */
+.main-footer {
+  background: linear-gradient(to right, #3a0ca3, #7209b7, #f72585);
+  color: white;
+  padding: 30px 20px;
+  text-align: left;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.footer-content div {
+  flex: 1 1 250px;
+}
+
+.gpay-qr {
+  width: 120px;
+  height: auto;
+}
+
+.footer-copy {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 14px;
+  opacity: 0.7;
+}

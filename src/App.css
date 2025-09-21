@@ -1,0 +1,9 @@
+/* src/App.css */
+/* Existing styles from your app */
+
+.main-content {
+  padding: 20px; /* Add some padding to main content area */
+  padding-top: 80px; /* Adjust if your navbar is fixed */
+  max-width: 1400px;
+  margin: 0 auto;
+}
