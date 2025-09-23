@@ -53,7 +53,18 @@ function Navbar({ cartItemCount, onCartClick }) {
       alert("Signup failed. Server error.");
     }
   };
-
+useEffect(() => {
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/products`);
+      const data = await res.json();
+      setProducts(data); // save in state
+    } catch (err) {
+      console.error("Products fetch error:", err);
+    }
+  };
+  fetchProducts();
+}, []);
   // ----------------- SIGNIN -----------------
   const handleSigninSubmit = async () => {
     if (!signinPhone || !signinPassword) return alert("Please enter email/phone and password");
