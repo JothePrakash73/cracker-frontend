@@ -1,3 +1,4 @@
+// src/pages/Products.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProductItem from '../components/ProductItem';
@@ -21,12 +22,16 @@ function Products({ onAddToCart }) {
   ];
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/products')
+    // ✅ Use deployed backend
+    const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
+
+    fetch(`${API_BASE}/products`)
       .then(res => res.json())
       .then(data => {
         const formatted = data.map(p => ({
           ...p,
-          imageUrl: `http://localhost:5000${p.image}`,
+          // ✅ Fixed template literal
+          imageUrl: `${API_BASE.replace("/api","")}${p.image || ""}`,
         }));
         setProducts(formatted);
         setFiltered(formatted);
@@ -121,11 +126,7 @@ function Products({ onAddToCart }) {
           <div className="not-found">❌ No products found</div>
         ) : (
           filtered.map((product) => (
-            <ProductItem
-              key={product._id}
-              product={product}
-              onAddToCart={() => onAddToCart(product, navigate)}
-            />
+            <ProductItem key={product._id} product={product} onAddToCart={() => onAddToCart(product, navigate)} />
           ))
         )}
       </div>

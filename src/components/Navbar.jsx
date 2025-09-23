@@ -1,10 +1,8 @@
-// src/components/Navbar.jsx
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import "./Navbar.css";
 
-// ✅ Base API URL (Render backend)
 const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
 
 function Navbar({ cartItemCount, onCartClick }) {
@@ -26,56 +24,36 @@ function Navbar({ cartItemCount, onCartClick }) {
   const [signinPassword, setSigninPassword] = useState("");
   const dropdownRef = useRef(null);
 
-  // ----------------- SIGNUP -----------------
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    if (signupData.password !== signupData.confirmPassword) {
-      return alert("Passwords do not match!");
-    }
+    if (signupData.password !== signupData.confirmPassword) return alert("Passwords do not match!");
     try {
       const res = await fetch(`${API_BASE}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signupData),
       });
-
       const data = await res.json();
       if (res.ok && data.success) {
         alert("✅ Signup successful! Please sign in.");
         setShowSignup(false);
         setShowSignin(true);
         setSignupData({ name: "", phone: "", email: "", place: "", district: "", password: "", confirmPassword: "" });
-      } else {
-        alert(data.message || "Signup failed.");
-      }
+      } else alert(data.message || "Signup failed.");
     } catch (err) {
       console.error("Signup Error:", err);
       alert("Signup failed. Server error.");
     }
   };
-useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch(`${API_BASE}/products`);
-      const data = await res.json();
-      setProducts(data); // save in state
-    } catch (err) {
-      console.error("Products fetch error:", err);
-    }
-  };
-  fetchProducts();
-}, []);
-  // ----------------- SIGNIN -----------------
+
   const handleSigninSubmit = async () => {
     if (!signinPhone || !signinPassword) return alert("Please enter email/phone and password");
-
     try {
       const res = await fetch(`${API_BASE}/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phoneOrEmail: signinPhone, password: signinPassword }),
       });
-
       const data = await res.json();
       if (res.ok && data.success) {
         localStorage.setItem("user", JSON.stringify(data.user));
@@ -97,7 +75,6 @@ useEffect(() => {
     }
   };
 
-  // ----------------- LOGOUT -----------------
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
@@ -121,11 +98,7 @@ useEffect(() => {
           <div className="auth-section" ref={dropdownRef}>
             {user ? (
               <div style={{ position: "relative" }}>
-                <div
-                  onClick={() => setDropdownOpen(v => !v)}
-                  className="avatar"
-                  title={user.name || user.phone}
-                >
+                <div onClick={() => setDropdownOpen(v => !v)} className="avatar" title={user.name || user.phone}>
                   {user.name ? user.name.charAt(0).toUpperCase() : "?"}
                 </div>
                 {dropdownOpen && (
@@ -143,23 +116,13 @@ useEffect(() => {
             ) : (
               <>
                 <button className="auth-btn" onClick={() => setShowSignup(true)}>Sign Up</button>
-                <button
-                  className="auth-btn secondary"
-                  onClick={() => {
-                    setSigninPhone("");
-                    setSigninPassword("");
-                    setShowSignin(true);
-                  }}
-                >
-                  Sign In
-                </button>
+                <button className="auth-btn secondary" onClick={() => { setSigninPhone(""); setSigninPassword(""); setShowSignin(true); }}>Sign In</button>
               </>
             )}
           </div>
         </div>
       </nav>
 
-      {/* ----------------- SIGNUP MODAL ----------------- */}
       {showSignup && (
         <div className="modal">
           <div className="modal-content">
@@ -182,23 +145,12 @@ useEffect(() => {
         </div>
       )}
 
-      {/* ----------------- SIGNIN MODAL ----------------- */}
       {showSignin && (
         <div className="modal">
           <div className="modal-content">
             <h2>Sign In</h2>
-            <input
-              placeholder="Email or Phone"
-              value={signinPhone}
-              onChange={(e) => setSigninPhone(e.target.value)}
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              value={signinPassword}
-              onChange={(e) => setSigninPassword(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSigninSubmit()}
-            />
+            <input placeholder="Email or Phone" value={signinPhone} onChange={(e) => setSigninPhone(e.target.value)} />
+            <input type="password" placeholder="Password" value={signinPassword} onChange={(e) => setSigninPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSigninSubmit()} />
             <button onClick={handleSigninSubmit} className="modal-btn">Sign In</button>
             <button className="close-btn" onClick={() => setShowSignin(false)}>✖</button>
           </div>
