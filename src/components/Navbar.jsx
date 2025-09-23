@@ -4,12 +4,9 @@ import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import "./Navbar.css";
 
-const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-1-y3m0.onrender.com/api";
-
-fetch(`${API_BASE}/products`)   // Fetch all products
-fetch(`${API_BASE}/orders`)     // Fetch all orders
-fetch(`${API_BASE}/counters`)     // Signup new user
-fetch(`${API_BASE}/users`)     // Signin existing user
+// ✅ Base API URL (Render backend)
+const API_BASE =
+  process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
 
 function Navbar({ cartItemCount, onCartClick }) {
   const [user, setUser] = useState(() => {
@@ -46,7 +43,7 @@ function Navbar({ cartItemCount, onCartClick }) {
       return alert("Passwords do not match!");
     }
     try {
-      const res = await fetch(`${API_BASE}/api/signup`, {
+      const res = await fetch(`${API_BASE}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(signupData),
@@ -80,7 +77,7 @@ function Navbar({ cartItemCount, onCartClick }) {
       return alert("Please enter email/phone and password");
     }
     try {
-      const res = await fetch(`${API_BASE}/api/signin`, {
+      const res = await fetch(`${API_BASE}/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -95,7 +92,7 @@ function Navbar({ cartItemCount, onCartClick }) {
         localStorage.setItem("user", JSON.stringify(data.user));
         setUser(data.user);
         setSigninPhone("");
-        setSigninPassword("");l
+        setSigninPassword("");
         setShowSignin(false);
         alert("✅ Signed in successfully!");
       } else {
@@ -171,8 +168,8 @@ function Navbar({ cartItemCount, onCartClick }) {
                 <button
                   className="auth-btn secondary"
                   onClick={() => {
-                    setSigninPhone("");      // reset on open
-                    setSigninPassword("");   // reset on open
+                    setSigninPhone(""); // reset on open
+                    setSigninPassword(""); // reset on open
                     setShowSignin(true);
                   }}
                 >
