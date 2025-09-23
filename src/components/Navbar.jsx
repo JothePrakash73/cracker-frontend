@@ -8,8 +8,8 @@ const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-1-y3m0.on
 
 fetch(`${API_BASE}/products`)   // Fetch all products
 fetch(`${API_BASE}/orders`)     // Fetch all orders
-fetch(`${API_BASE}/Counters`)     // Signup new user
-fetch(`${API_BASE}/Users`)     // Signin existing user
+fetch(`${API_BASE}/counters`)     // Signup new user
+fetch(`${API_BASE}/users`)     // Signin existing user
 
 function Navbar({ cartItemCount, onCartClick }) {
   const [user, setUser] = useState(() => {
