@@ -1,3 +1,4 @@
+// src/pages/AfterPayment.jsx
 import React, { useState } from 'react';
 import './AfterPayment.css';
 
@@ -8,13 +9,13 @@ function SubmitOrder({ cartItems }) {
   const [landmark, setLandmark] = useState('');
   const [billFile, setBillFile] = useState(null);
   const [screenshotFile, setScreenshotFile] = useState(null);
-  const [billNumber, setBillNumber] = useState(''); // store generated bill number
+  const [billNumber, setBillNumber] = useState('');
 
-  // ✅ Function to generate Excel-like A, B, ... Z, AA, AB numbering
+  // Excel-like bill number generator
   const generateBillNumber = (n) => {
     let result = '';
     while (n > 0) {
-      n--; // Adjust for 0-based index
+      n--;
       result = String.fromCharCode((n % 26) + 65) + result;
       n = Math.floor(n / 26);
     }
@@ -22,41 +23,29 @@ function SubmitOrder({ cartItems }) {
   };
 
   const validateFiles = () => {
-    if (!billFile) {
+    if (!billFile || billFile.type !== 'application/pdf') {
       alert('Please upload a valid PDF bill.');
       return false;
     }
-    if (billFile.type !== 'application/pdf') {
-      alert('Invalid file type. Please upload a PDF file for the bill.');
+    if (!screenshotFile || !screenshotFile.type.startsWith('image/')) {
+      alert('Please upload a valid payment screenshot.');
       return false;
     }
-
-    if (!screenshotFile) {
-      alert('Please upload your payment screenshot.');
-      return false;
-    }
-    if (!screenshotFile.type.startsWith('image/')) {
-      alert('Invalid screenshot format. Please upload a valid image.');
-      return false;
-    }
-
     return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!validateFiles()) return;
 
     try {
-      // ✅ Fetch last bill index from backend
-      const lastRes = await fetch('http://localhost:5000/api/last-bill-number');
+      // Fetch last bill index from backend
+      const lastRes = await fetch('https://cracker-backend-b8ff.onrender.com/api/last-bill-number');
       const lastData = await lastRes.json();
       const nextBillIndex = lastData?.lastBillIndex ? lastData.lastBillIndex + 1 : 1;
       const newBillNumber = generateBillNumber(nextBillIndex);
       setBillNumber(newBillNumber);
 
-      // Prepare form data
       const formData = new FormData();
       formData.append('name', name);
       formData.append('phone', phone);
@@ -64,24 +53,23 @@ function SubmitOrder({ cartItems }) {
       formData.append('landmark', landmark);
       formData.append('bill', billFile);
       formData.append('screenshot', screenshotFile);
-      formData.append('billNumber', newBillNumber); // send to backend
+      formData.append('billNumber', newBillNumber);
 
-      const res = await fetch('http://localhost:5000/api/order-upload', {
+      const res = await fetch('https://cracker-backend-b8ff.onrender.com/api/order-upload', {
         method: 'POST',
         body: formData
       });
-
       const data = await res.json();
 
       if (data.success) {
         alert(`✅ Order Submitted!\nBill Number: ${newBillNumber}`);
         window.location.href = data.whatsappURL;
       } else {
-        alert('Upload failed. Please try again.');
+        alert('❌ Upload failed. Please try again.');
       }
     } catch (err) {
       console.error(err);
-      alert('Error submitting order. Please try again later.');
+      alert('❌ Error submitting order. Try again later.');
     }
   };
 
@@ -102,20 +90,10 @@ function SubmitOrder({ cartItems }) {
         <input type="text" value={landmark} onChange={(e) => setLandmark(e.target.value)} required />
 
         <label>Upload PDF Bill</label>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setBillFile(e.target.files[0])}
-          required
-        />
+        <input type="file" accept="application/pdf" onChange={(e) => setBillFile(e.target.files[0])} required />
 
         <label>Upload Payment Screenshot</label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setScreenshotFile(e.target.files[0])}
-          required
-        />
+        <input type="file" accept="image/*" onChange={(e) => setScreenshotFile(e.target.files[0])} required />
 
         {billNumber && (
           <p className="bill-number-display">

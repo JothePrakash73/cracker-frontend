@@ -16,40 +16,34 @@ function Products({ onAddToCart }) {
     '12 cm Sparklers', '50 cm Sparklers', '10 cm Sparklers',
     'All Sparklers', 'Flower Pots', 'Chakkars', 'Rockets',
     'Fancy Novelties', 'Fountains', 'Candles & Twinkling Star',
-    'Mega Fountains', 'One Sound Crackers', 'Rockets','New Novelties',
+    'Mega Fountains', 'One Sound Crackers', 'Rockets', 'New Novelties',
     'Elite Series','Mini Aerial Fancy','Paper Bombs','Repeating Shots',
     'Atom Bombs','New Arrival','Aerial Magic Fancy','Color Matches'
   ];
 
-  useEffect(() => {
-    // ✅ Use deployed backend
-    const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
+  const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
 
+  useEffect(() => {
     fetch(`${API_BASE}/products`)
       .then(res => res.json())
       .then(data => {
         const formatted = data.map(p => ({
           ...p,
-          // ✅ Fixed template literal
           imageUrl: `${API_BASE.replace("/api","")}${p.image || ""}`,
         }));
         setProducts(formatted);
         setFiltered(formatted);
       })
-      .catch(err => {
-        console.error("Failed to fetch products:", err);
-      });
+      .catch(err => console.error("Failed to fetch products:", err));
   }, []);
 
   useEffect(() => {
     let temp = [...products];
 
     if (category !== 'All') {
-      if (category === 'All Sparklers') {
-        temp = temp.filter(p => p.category.toLowerCase().includes('sparklers'));
-      } else {
-        temp = temp.filter(p => p.category === category);
-      }
+      temp = category === 'All Sparklers'
+        ? temp.filter(p => p.category.toLowerCase().includes('sparklers'))
+        : temp.filter(p => p.category === category);
     }
 
     if (search.trim()) {
@@ -72,23 +66,17 @@ function Products({ onAddToCart }) {
       for (let i = 0; i < count; i++) {
         const particle = document.createElement('div');
         particle.className = 'firework-burst';
-
         const angle = (360 / count) * i;
         const distance = Math.random() * 80 + 40;
         const dx = Math.cos((angle * Math.PI) / 180) * distance;
         const dy = Math.sin((angle * Math.PI) / 180) * distance;
-
         particle.style.left = `${x}px`;
         particle.style.top = `${y}px`;
         particle.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 70%)`;
         particle.style.setProperty('--dx', `${dx}px`);
         particle.style.setProperty('--dy', `${dy}px`);
-
         container?.appendChild(particle);
-
-        setTimeout(() => {
-          particle.remove();
-        }, 1500);
+        setTimeout(() => particle.remove(), 1500);
       }
     };
 
@@ -99,7 +87,6 @@ function Products({ onAddToCart }) {
   return (
     <div className="products-page">
       <div className="firework-container" id="firework-container"></div>
-
       <h2>🎆 Our Products</h2>
 
       <div className="filters" style={{ marginBottom: '1rem', display: 'flex', gap: '10px' }}>
@@ -110,25 +97,24 @@ function Products({ onAddToCart }) {
           onChange={(e) => setSearch(e.target.value)}
         />
         <select value={category} onChange={(e) => setCategory(e.target.value)}>
-          {categories.map((cat, i) => (
-            <option key={i} value={cat}>{cat}</option>
-          ))}
+          {categories.map((cat, i) => <option key={i} value={cat}>{cat}</option>)}
         </select>
         <button onClick={() => { setSearch(''); setCategory('All'); }}>Reset</button>
       </div>
 
-      {category !== 'All' && (
-        <h3 className="category-heading" style={{color:'white'}}>🎇 {category}</h3>
-      )}
+      {category !== 'All' && <h3 className="category-heading" style={{color:'white'}}>🎇 {category}</h3>}
 
       <div className="products-grid">
-        {filtered.length === 0 ? (
-          <div className="not-found">❌ No products found</div>
-        ) : (
-          filtered.map((product) => (
-            <ProductItem key={product._id} product={product} onAddToCart={() => onAddToCart(product, navigate)} />
+        {filtered.length === 0
+          ? <div className="not-found">❌ No products found</div>
+          : filtered.map(product => (
+            <ProductItem
+              key={product._id}
+              product={product}
+              onAddToCart={() => onAddToCart(product, navigate)}
+            />
           ))
-        )}
+        }
       </div>
     </div>
   );

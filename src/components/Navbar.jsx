@@ -7,11 +7,8 @@ const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onre
 
 function Navbar({ cartItemCount, onCartClick }) {
   const [user, setUser] = useState(() => {
-    try {
-      return JSON.parse(localStorage.getItem("user")) || null;
-    } catch {
-      return null;
-    }
+    try { return JSON.parse(localStorage.getItem("user")) || null; } 
+    catch { return null; }
   });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -102,7 +99,7 @@ function Navbar({ cartItemCount, onCartClick }) {
                   {user.name ? user.name.charAt(0).toUpperCase() : "?"}
                 </div>
                 {dropdownOpen && (
-                  <div className="dropdown">
+                                    <div className="dropdown">
                     <div className="dropdown-info">
                       <div className="dropdown-name">{user.name}</div>
                       <div className="dropdown-email">{user.phone}</div>
@@ -116,13 +113,18 @@ function Navbar({ cartItemCount, onCartClick }) {
             ) : (
               <>
                 <button className="auth-btn" onClick={() => setShowSignup(true)}>Sign Up</button>
-                <button className="auth-btn secondary" onClick={() => { setSigninPhone(""); setSigninPassword(""); setShowSignin(true); }}>Sign In</button>
+                <button className="auth-btn secondary" onClick={() => { 
+                  setSigninPhone(""); 
+                  setSigninPassword(""); 
+                  setShowSignin(true); 
+                }}>Sign In</button>
               </>
             )}
           </div>
         </div>
       </nav>
 
+      {/* Signup Modal */}
       {showSignup && (
         <div className="modal">
           <div className="modal-content">
@@ -145,12 +147,23 @@ function Navbar({ cartItemCount, onCartClick }) {
         </div>
       )}
 
+      {/* Signin Modal */}
       {showSignin && (
         <div className="modal">
           <div className="modal-content">
             <h2>Sign In</h2>
-            <input placeholder="Email or Phone" value={signinPhone} onChange={(e) => setSigninPhone(e.target.value)} />
-            <input type="password" placeholder="Password" value={signinPassword} onChange={(e) => setSigninPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSigninSubmit()} />
+            <input
+              placeholder="Email or Phone"
+              value={signinPhone}
+              onChange={(e) => setSigninPhone(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={signinPassword}
+              onChange={(e) => setSigninPassword(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSigninSubmit()}
+            />
             <button onClick={handleSigninSubmit} className="modal-btn">Sign In</button>
             <button className="close-btn" onClick={() => setShowSignin(false)}>✖</button>
           </div>
@@ -161,3 +174,4 @@ function Navbar({ cartItemCount, onCartClick }) {
 }
 
 export default Navbar;
+
