@@ -4,7 +4,12 @@ import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import "./Navbar.css";
 
-const API_BASE = process.env.REACT_APP_API || "http://localhost:5000";
+const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-1-y3m0.onrender.com/api";
+
+fetch(`${API_BASE}/Product`)   // Fetch all products
+fetch(`${API_BASE}/Order`)     // Fetch all orders
+fetch(`${API_BASE}/Counter`)     // Signup new user
+fetch(`${API_BASE}/User`)     // Signin existing user
 
 function Navbar({ cartItemCount, onCartClick }) {
   const [user, setUser] = useState(() => {
@@ -90,7 +95,7 @@ function Navbar({ cartItemCount, onCartClick }) {
         localStorage.setItem("user", JSON.stringify(data.user));
         setUser(data.user);
         setSigninPhone("");
-        setSigninPassword("");
+        setSigninPassword("");l
         setShowSignin(false);
         alert("✅ Signed in successfully!");
       } else {
