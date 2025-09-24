@@ -8,13 +8,8 @@ function CartDrawer({ isOpen, onClose, cartItems, onRemoveFromCart, onUpdateQuan
   const [phone, setPhone] = useState('');
   const [place, setPlace] = useState('');
 
-  // 80% OFF → You pay only 20%
-  const DISCOUNT = 0.2;
-
-  // Total payable (after 80% OFF)
-  const total = cartItems.reduce((sum, item) => {
-    return sum + item.price * DISCOUNT * item.quantity;
-  }, 0);
+  const DISCOUNT = 0.2; // 80% OFF → pay 20%
+  const total = cartItems.reduce((sum, item) => sum + item.price * DISCOUNT * item.quantity, 0);
 
   const handleSubmitOrder = () => {
     if (!name || !phone || !place) {
@@ -42,12 +37,28 @@ function CartDrawer({ isOpen, onClose, cartItems, onRemoveFromCart, onUpdateQuan
     message += `%0A✅ Total Payable: ₹${total.toFixed(2)}%0A`;
     message += `🎉 Thank you for shopping with Sri Pathrakali Crackers!`;
 
-    // WhatsApp number (with country code, replace with yours)
     const whatsappNumber = '917305171319';
-    const whatsappURL = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
+    const encodedMessage = encodeURIComponent(message);
 
-    // Open WhatsApp in a new tab (works on all devices)
-    window.open(whatsappURL, '_blank');
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (isMobile) {
+      // Mobile: open WhatsApp app
+      window.location.href = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    } else {
+      // Desktop: try to open WhatsApp desktop app, fallback to Web
+      const appUrl = `whatsapp://send?phone=${whatsappNumber}&text=${encodedMessage}`;
+      const webUrl = `https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
+
+      // Timeout fallback to WhatsApp Web
+      const timeout = setTimeout(() => {
+        window.open(webUrl, '_blank');
+      }, 500);
+
+      // Attempt to open WhatsApp Desktop App
+      const newWindow = window.open(appUrl);
+      if (newWindow) clearTimeout(timeout);
+    }
   };
 
   return (
