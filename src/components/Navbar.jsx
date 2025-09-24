@@ -86,7 +86,6 @@ function Navbar({ cartItemCount, onCartClick }) {
         <div className="nav-links">
           <Link to="/products">Products</Link>
           <Link to="/about">About</Link>
-          <Link to="/after-payment">After Payment</Link>
           <button className="cart-button" onClick={onCartClick}>
             <ShoppingCart size={22} />
             <span style={{ marginLeft: 6 }}>{cartItemCount}</span>
@@ -99,7 +98,7 @@ function Navbar({ cartItemCount, onCartClick }) {
                   {user.name ? user.name.charAt(0).toUpperCase() : "?"}
                 </div>
                 {dropdownOpen && (
-                                    <div className="dropdown">
+                  <div className="dropdown">
                     <div className="dropdown-info">
                       <div className="dropdown-name">{user.name}</div>
                       <div className="dropdown-email">{user.phone}</div>
@@ -174,4 +173,3 @@ function Navbar({ cartItemCount, onCartClick }) {
 }
 
 export default Navbar;
-

@@ -21,10 +21,7 @@ const cartReducer = (state, action) => {
           ...state,
           cartItems: state.cartItems.map(item =>
             item._id === product._id
-              ? {
-                  ...item,
-                  quantity: Math.min(item.quantity + 1, 100),
-                }
+              ? { ...item, quantity: Math.min(item.quantity + 1, 100) }
               : item
           ),
         };
@@ -52,9 +49,7 @@ const cartReducer = (state, action) => {
           cartItems: state.cartItems.filter(item => item._id !== id),
         };
       }
-      if (quantity > 100) {
-        return state; // ignore quantity > 100
-      }
+      if (quantity > 100) return state;
       return {
         ...state,
         cartItems: state.cartItems.map(item =>
@@ -62,6 +57,9 @@ const cartReducer = (state, action) => {
         ),
       };
     }
+
+    case 'CLEAR_CART':
+      return { ...state, cartItems: [] };
 
     default:
       return state;
@@ -97,7 +95,6 @@ function App() {
       (sum, item) => sum + item.price * item.quantity,
       0
     );
-
     const amountStr = totalAmount.toFixed(2);
     const gpayUrl = `https://pay.google.com/gp/p/ui/pay?amount=${amountStr}&currency=INR`;
     window.open(gpayUrl, '_blank');
@@ -113,11 +110,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/after-payment" element={<AfterPayment />} /> */}
-          <Route
-            path="/products"
-            element={<Products onAddToCart={handleAddToCart} />}
-          />
+          <Route path="/products" element={<Products onAddToCart={handleAddToCart} />} />
           <Route
             path="/cart"
             element={
@@ -138,7 +131,7 @@ function App() {
         onRemoveFromCart={handleRemoveFromCart}
         onUpdateQuantity={handleUpdateQuantity}
         onPurchase={handlePurchase}
-        onClearCart={() => dispatch({ type: 'CLEAR_CART' })} // optional clear
+        onClearCart={() => dispatch({ type: 'CLEAR_CART' })}
       />
 
       <Footer />
