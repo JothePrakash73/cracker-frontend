@@ -43,7 +43,7 @@ function CartDrawer({ isOpen, onClose, cartItems, onRemoveFromCart, onUpdateQuan
     message += `🎉 Thank you for shopping with Sri Pathrakali Crackers!`;
 
     // WhatsApp number (with country code, replace with yours)
-    const whatsappNumber = '918148842731';
+    const whatsappNumber = '917305171319';
     const whatsappURL = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${message}`;
 
     // Open WhatsApp in a new tab (works on all devices)
