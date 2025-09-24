@@ -86,6 +86,7 @@ function Navbar({ cartItemCount, onCartClick }) {
         <div className="nav-links">
           <Link to="/products">Products</Link>
           <Link to="/about">About</Link>
+          <Link to="/after-payment">After Payment</Link>
           <button className="cart-button" onClick={onCartClick}>
             <ShoppingCart size={22} />
             <span style={{ marginLeft: 6 }}>{cartItemCount}</span>

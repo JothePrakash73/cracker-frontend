@@ -9,7 +9,6 @@ import Cart from './pages/Cart';
 import CartDrawer from './components/CartDrawer';
 import Footer from './components/Footer';
 import './App.css';
-import AfterPayment from './pages/AfterPayment';
 import Register from './pages/Register';
 
 const cartReducer = (state, action) => {
@@ -114,7 +113,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/after-payment" element={<AfterPayment />} />
+          {/* <Route path="/after-payment" element={<AfterPayment />} /> */}
           <Route
             path="/products"
             element={<Products onAddToCart={handleAddToCart} />}
