@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import './AfterPayment.css';
 
-function SubmitOrder({ cartItems }) {
+const API_BASE = process.env.REACT_APP_API || 'https://cracker-backend-b8ff.onrender.com/api';
+
+function AfterPayment() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [place, setPlace] = useState('');
@@ -39,8 +41,8 @@ function SubmitOrder({ cartItems }) {
     if (!validateFiles()) return;
 
     try {
-      // Fetch last bill index from backend
-      const lastRes = await fetch('https://cracker-backend-b8ff.onrender.com/api/last-bill-number');
+      // Get last bill index from backend
+      const lastRes = await fetch(`${API_BASE}/last-bill-number`);
       const lastData = await lastRes.json();
       const nextBillIndex = lastData?.lastBillIndex ? lastData.lastBillIndex + 1 : 1;
       const newBillNumber = generateBillNumber(nextBillIndex);
@@ -55,15 +57,16 @@ function SubmitOrder({ cartItems }) {
       formData.append('screenshot', screenshotFile);
       formData.append('billNumber', newBillNumber);
 
-      const res = await fetch('https://cracker-backend-b8ff.onrender.com/api/order-upload', {
+      const res = await fetch(`${API_BASE}/order-upload`, {
         method: 'POST',
-        body: formData
+        body: formData,
       });
+
       const data = await res.json();
 
       if (data.success) {
         alert(`✅ Order Submitted!\nBill Number: ${newBillNumber}`);
-        window.location.href = data.whatsappURL;
+        window.location.href = data.whatsappURL; // Redirect to WhatsApp
       } else {
         alert('❌ Upload failed. Please try again.');
       }
@@ -107,4 +110,4 @@ function SubmitOrder({ cartItems }) {
   );
 }
 
-export default SubmitOrder;
+export default AfterPayment;
