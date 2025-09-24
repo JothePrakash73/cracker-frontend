@@ -46,18 +46,21 @@ function CartDrawer({ isOpen, onClose, cartItems, onRemoveFromCart, onUpdateQuan
       // Mobile: open WhatsApp app
       window.location.href = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     } else {
-      // Desktop: try to open WhatsApp desktop app, fallback to Web
+      // Desktop: try WhatsApp Desktop app using hidden iframe, fallback to Web
       const appUrl = `whatsapp://send?phone=${whatsappNumber}&text=${encodedMessage}`;
       const webUrl = `https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
 
-      // Timeout fallback to WhatsApp Web
-      const timeout = setTimeout(() => {
-        window.open(webUrl, '_blank');
-      }, 500);
+      // Create hidden iframe to open desktop app
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = appUrl;
+      document.body.appendChild(iframe);
 
-      // Attempt to open WhatsApp Desktop App
-      const newWindow = window.open(appUrl);
-      if (newWindow) clearTimeout(timeout);
+      // Fallback to WhatsApp Web after 1 second
+      setTimeout(() => {
+        document.body.removeChild(iframe);
+        window.open(webUrl, '_blank');
+      }, 1000);
     }
   };
 
