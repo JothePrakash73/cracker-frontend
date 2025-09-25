@@ -16,29 +16,40 @@ function CartDrawer({ isOpen, onClose, cartItems, onRemoveFromCart, onUpdateQuan
       alert('⚠️ Please fill all details.');
       return;
     }
+
     if (cartItems.length === 0) {
       alert('⚠️ Your cart is empty.');
       return;
     }
 
-    // Build WhatsApp message
-    let message = `🧨 Order Details:%0A`;
-    message += `👤 Name: ${name}%0A`;
-    message += `📞 Phone: ${phone}%0A`;
-    message += `📍 Place: ${place}%0A%0A`;
-    message += `🛒 Items Ordered:%0A`;
+    // Create WhatsApp order message
+    const lines = [];
+
+    lines.push(`🧨 *Sri Pathrakali Crackers Order*`);
+    lines.push(`--------------------------------`);
+    lines.push(`👤 *Name:* ${name}`);
+    lines.push(`📞 *Phone:* ${phone}`);
+    lines.push(`📍 *Place:* ${place}`);
+    lines.push(``);
+    lines.push(`🛒 *Items Ordered:*`);
 
     cartItems.forEach((item, idx) => {
       const discountedPrice = item.price * DISCOUNT;
       const subtotal = discountedPrice * item.quantity;
-      message += `${idx + 1}. ${item.name} = ${item.quantity} x ₹${discountedPrice.toFixed(2)} = ₹${subtotal.toFixed(2)}%0A`;
+
+      lines.push(`${idx + 1}. ${item.name}`);
+      lines.push(`   Qty: ${item.quantity}`);
+      lines.push(`   Price: ₹${discountedPrice.toFixed(2)} each`);
+      lines.push(`   Subtotal: ₹${subtotal.toFixed(2)}`);
+      lines.push(``);
     });
 
-    message += `%0A✅ Total Payable: ₹${total.toFixed(2)}%0A`;
-    message += `🎉 Thank you for shopping with Sri Pathrakali Crackers!`;
+    lines.push(`💰 *Total Payable:* ₹${total.toFixed(2)}`);
+    lines.push(`🎉 Thank you for ordering with us!`);
 
-    const whatsappNumber = '917305171319';
+    const message = lines.join('\n');
     const encodedMessage = encodeURIComponent(message);
+    const whatsappNumber = '917305171319';
 
     const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 
@@ -46,17 +57,15 @@ function CartDrawer({ isOpen, onClose, cartItems, onRemoveFromCart, onUpdateQuan
       // Mobile: open WhatsApp app
       window.location.href = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     } else {
-      // Desktop: try WhatsApp Desktop app using hidden iframe, fallback to Web
+      // Desktop: try WhatsApp app via iframe first, fallback to web
       const appUrl = `whatsapp://send?phone=${whatsappNumber}&text=${encodedMessage}`;
       const webUrl = `https://web.whatsapp.com/send?phone=${whatsappNumber}&text=${encodedMessage}`;
 
-      // Create hidden iframe to open desktop app
       const iframe = document.createElement('iframe');
       iframe.style.display = 'none';
       iframe.src = appUrl;
       document.body.appendChild(iframe);
 
-      // Fallback to WhatsApp Web after 1 second
       setTimeout(() => {
         document.body.removeChild(iframe);
         window.open(webUrl, '_blank');
