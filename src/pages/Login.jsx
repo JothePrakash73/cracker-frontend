@@ -1,17 +1,20 @@
+// src/components/Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // for page navigation
+import { useNavigate } from "react-router-dom";
+
+const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate(); // navigation hook
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post("http://localhost:5000/login", { email, password });
+      const res = await axios.post(`${API_BASE}/login`, { email, password });
       alert(`✅ ${res.data.message}`);
     } catch (err) {
       alert(`❌ ${err.response?.data?.message || "Login failed"}`);
@@ -43,7 +46,6 @@ export default function Login() {
           Login
         </button>
 
-        {/* Signup Button */}
         <button
           type="button"
           style={{
@@ -52,7 +54,7 @@ export default function Login() {
             color: "white",
             border: "none",
           }}
-          onClick={() => navigate("/register")} // navigate to register page
+          onClick={() => navigate("/register")}
         >
           Sign Up
         </button>

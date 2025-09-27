@@ -5,26 +5,36 @@ import './Footer.css';
 const Footer = () => (
   <footer className="main-footer">
     <div className="footer-content">
-      <div className="contact-info">
-        <h4>Contact</h4>
-        <p>Phone: +91 8144306667</p>
-        <p>Phone: +91 7305171319</p>
-        <p>Email: umaarunjothe1@gmail.com</p>
+      {/* Contact Info */}
+      <div className="footer-section">
+        <h4>📞 Contact</h4>
+        <p>+91 81443 06667</p>
+        <p>+91 73051 71319</p>
+        <p>📧 umaarunjothe1@gmail.com</p>
       </div>
-      <div className="bank-details">
-        <h4>Bank Details</h4>
-        <p>A/c Name J.ArunKumar</p>
-        <p>Bank Name : TMB-SRIVILLIPUTTUR</p>
-        <p>IFSC Code: TMBL0000328</p>
-        
-        <p>A/c Number: 328100050305114</p>
+
+      {/* Bank Details */}
+      <div className="footer-section">
+        <h4>🏦 Bank Details</h4>
+        <p><strong>A/c Name:</strong> J.ArunKumar</p>
+        <p><strong>Bank:</strong> TMB-SRIVILLIPUTTUR</p>
+        <p><strong>IFSC:</strong> TMBL0000328</p>
+        <p><strong>A/c No:</strong> 328100050305114</p>
       </div>
-      <div className="gpay-qr-container">
+
+      {/* GPay + Download */}
+      <div className="footer-section qr-section">
         <img src="/images/gpay-qr.png" alt="GPay QR" className="gpay-qr" />
         <p>Scan & Pay</p>
+        <a href="/files/pricelist.pdf" download className="download-btn">
+          📄 Download Price List
+        </a>
       </div>
     </div>
-    <p className="footer-copy">&copy; 2025 Sri Pathrakali Crackers.All Rights Reserved.</p>
+
+    <div className="footer-bottom">
+      <p>&copy; 2025 Sri Pathrakali Crackers · All Rights Reserved.</p>
+    </div>
   </footer>
 );
 

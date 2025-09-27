@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
+const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
+
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +20,7 @@ export default function Register() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/register", {
+      const res = await axios.post(`${API_BASE}/register`, {
         email,
         password,
       });
@@ -41,7 +43,6 @@ export default function Register() {
         textAlign: "center",
       }}
     >
-      {/* Logo / Title like YouTube */}
       <h2 style={{ marginBottom: "1.5rem", color: "#dd2476" }}>
         Create your Account
       </h2>
