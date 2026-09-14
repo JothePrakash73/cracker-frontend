@@ -26,14 +26,14 @@ const Footer = () => (
       <div className="footer-section qr-section">
         <img src="/images/gpay-qr.png" alt="GPay QR" className="gpay-qr" />
         <p>Scan & Pay</p>
-        <a href="/files/pricelist.pdf" download className="download-btn">
+        <a href="/files/SriPathrakaliCrackers.pdf" download className="download-btn">
           📄 Download Price List
         </a>
       </div>
     </div>
 
     <div className="footer-bottom">
-      <p>&copy; 2025 Sri Pathrakali Crackers · All Rights Reserved.</p>
+      <p>&copy; 2026 Sri Pathrakali Crackers · All Rights Reserved.</p>
     </div>
   </footer>
 );

@@ -18,10 +18,10 @@ function Products({ onAddToCart }) {
     'Fancy Novelties', 'Fountains', 'Candles & Twinkling Star',
     'Mega Fountains', 'One Sound Crackers', 'Rockets', 'New Novelties',
     'Elite Series','Mini Aerial Fancy','Paper Bombs','Repeating Shots',
-    'Atom Bombs','New Arrival','Aerial Magic Fancy','Color Matches','Shots'
+    'Atom Bombs','New Arrival','Aerial Magic Fancy','Color Matches','Shots','Set Out'
   ];
 
-  const API_BASE = process.env.REACT_APP_API || "https://cracker-backend-b8ff.onrender.com/api";
+  const API_BASE = process.env.REACT_APP_API || "http://localhost:5000/api";
 
   useEffect(() => {
     fetch(`${API_BASE}/products`)
