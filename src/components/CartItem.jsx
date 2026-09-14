@@ -21,7 +21,7 @@ function CartItem({ item, onRemoveFromCart, onUpdateQuantity, disabled = false }
   return (
     <div className="cart-item">
      <img 
-  src={`https://api.sripathrakalicrackers.in${item.image}`} 
+  src={`https://api.sripathrakalicrackers.in/images${item.image}`} 
   alt={item.name} 
   className="cart-item-image" 
 />
