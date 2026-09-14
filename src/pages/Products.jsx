@@ -24,18 +24,19 @@ function Products({ onAddToCart }) {
   const API_BASE = process.env.REACT_APP_API || "https://api.sripathrakalicrackers.in/api";
 
   useEffect(() => {
-    fetch(`${API_BASE}/products`)
-      .then(res => res.json())
-      .then(data => {
-        const formatted = data.map(p => ({
-          ...p,
-          imageUrl: `${API_BASE.replace("/api","")}${p.image || ""}`,
-        }));
-        setProducts(formatted);
-        setFiltered(formatted);
-      })
-      .catch(err => console.error("Failed to fetch products:", err));
-  }, []);
+  fetch(`${API_BASE}/products`)
+    .then(res => res.json())
+    .then(data => {
+      const formatted = data.map(p => ({
+        ...p,
+        imageUrl: `https://api.sripathrakalicrackers.in${p.image || ""}`,
+      }));
+
+      setProducts(formatted);
+      setFiltered(formatted);
+    })
+    .catch(err => console.error("Failed to fetch products:", err));
+}, []);
 
   useEffect(() => {
     let temp = [...products];
