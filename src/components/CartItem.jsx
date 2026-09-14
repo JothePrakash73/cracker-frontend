@@ -20,11 +20,11 @@ function CartItem({ item, onRemoveFromCart, onUpdateQuantity, disabled = false }
 
   return (
     <div className="cart-item">
-      <img
-         src={`http://localhost:5000${item.image}`}
-        alt={item.name}
-        className="cart-item-image"
-      />
+     <img 
+  src={`https://api.sripathrakalicrackers.in${item.image}`} 
+  alt={item.name} 
+  className="cart-item-image" 
+/>
       <div className="cart-item-details">
         <h3>{item.name}</h3>
         <p>
