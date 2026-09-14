@@ -21,7 +21,7 @@ function Products({ onAddToCart }) {
     'Atom Bombs','New Arrival','Aerial Magic Fancy','Color Matches','Shots','Set Out'
   ];
 
-  const API_BASE = process.env.REACT_APP_API || "http://localhost:5000/api";
+  const API_BASE = process.env.REACT_APP_API || "https://api.sripathrakalicrackers.in/api";
 
   useEffect(() => {
     fetch(`${API_BASE}/products`)
